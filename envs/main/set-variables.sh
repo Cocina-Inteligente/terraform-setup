@@ -1,0 +1,1 @@
+export TERRAFORM_INSTALL=true
