@@ -77,16 +77,14 @@ jobs:
         shell: bash
     
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3  
-          - name: Remove GitHub Runner IP from Whitelist
-        if: always()
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            set -eu
-            agentIP=$(curl -s https://api.ipify.org/)
-            az storage account network-rule remove  \
-              --resource-group "${{ secrets.RESOURCE_GROUP }}" \
-              --account-name "${{ secrets.STORAGE_ACCOUNT_NAME }}" \
-              --ip-address $agentIP
+    - name: Remove GitHub Runner IP from Whitelist
+      if: always()
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          set -eu
+          agentIP=$(curl -s https://api.ipify.org/)
+          az storage account network-rule remove  \
+            --resource-group "${{ secrets.RESOURCE_GROUP }}" \
+            --account-name "${{ secrets.STORAGE_ACCOUNT_NAME }}" \
+            --ip-address $agentIP
