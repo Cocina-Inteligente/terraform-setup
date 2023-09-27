@@ -53,6 +53,8 @@ main() {
     export ARM_TENANT_ID=5f45355f-95f9-4862-9d17-94f05e20529b
     export ARM_SUBSCRIPTION_ID=586d6509-c783-41ef-a543-39a09899fe70
 
+    echo curl ipinfo.io/ip
+
     source envs/$ENV/set-variables.sh
     cd layers/$SERVICE
 
