@@ -55,7 +55,7 @@ jobs:
             --resource-group "${{ secrets.RESOURCE_GROUP }}" \
             --account-name "${{ secrets.STORAGE_ACCOUNT_NAME }}" \
             --ip-address $agentIP
-          sleep 300
+          sleep 30
       
     - name: Terraform init
       run: ${GITHUB_WORKSPACE}/execute-terraform.sh -a init -s key_vault -e main
