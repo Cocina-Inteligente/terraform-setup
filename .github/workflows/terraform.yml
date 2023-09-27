@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   agent-setup:
-    name: 'Terraform'
+    name: 'Agent setup'
     runs-on: ubuntu-latest
     environment: production
 
