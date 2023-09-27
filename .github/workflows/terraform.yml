@@ -46,10 +46,13 @@ jobs:
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Terraform init
+      uses: hashicorp/setup-terraform@v2
       run: ${GITHUB_WORKSPACE}/execute-terraform.sh -a init -e main
 
     - name: Terraform plan
+      uses: hashicorp/setup-terraform@v2
       run: ${GITHUB_WORKSPACE}/execute-terraform.sh -a plan -s key_vault -e main
 
     - name: Terraform apply
+      uses: hashicorp/setup-terraform@v2
       run: ${GITHUB_WORKSPACE}/execute-terraform.sh -a apply  -s key_vault -e main
