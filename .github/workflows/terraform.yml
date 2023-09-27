@@ -9,8 +9,8 @@ permissions:
   contents: read
 
 jobs:
-  agent-setup:
-    name: 'Agent setup'
+  execute-terraform:
+    name: 'Execute Terraform'
     runs-on: ubuntu-latest
     environment: main
 
@@ -19,7 +19,6 @@ jobs:
         shell: bash
     
     steps:
-    # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
 
@@ -30,20 +29,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-  
-  execute-terraform:
-    name: 'Execute Terraform'
-    runs-on: ubuntu-latest
-    needs: agent-setup
-    environment: main
-
-    defaults:
-      run:
-        shell: bash
-    
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
     
     - name: Whitelist GitHub Runner IP
       uses: azure/CLI@v1
