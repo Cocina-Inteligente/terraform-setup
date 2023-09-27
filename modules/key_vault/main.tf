@@ -1,26 +1,13 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source = "hashicorp/azurerm"
-      version = "3.73.0"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {}
-}
-
 locals {
   resource_type = "kv"
-  main_resource_name = concat(local.resource_type, "-", var.app_name, "-", var.env, "-", var.location)
+  main_resource_name = "${local.resource_type}-${var.app_name}-${var.env}-${var.location}"
   short_resource_name = replace(local.main_resource_name, "-", "")
 }
 
 data "azurerm_client_config" "this" {}
 
 resource "azurerm_resource_group" "this" {
-  name     = local.main_resource_name + "-rg"
+  name     = "${local.main_resource_name}-rg"
   location = var.location
 }
 

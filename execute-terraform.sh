@@ -1,42 +1,25 @@
 #!/bin/bash
 
-setup() {
-    source envs/$ENV/set-variables.sh
+execute() {
 
-    if $TERRAFORM_INSTALL ; then
-        apt-get update && apt-get install -y gnupg software-properties-common
+    case $1 in
+        init)
+            printf "\n\nAbout to: $1 Terraform in $3 environment\n"
+            command="terraform init -backend-config=../../envs/$3/$2/backend.tfbackend"
+            command+=" -var-file=../../envs/$3/$2/variables.tfvars -var env=$3"
+        ;;
+        plan)
+            printf "\n\nAbout to: $1 $2 in $3 environment\n"
+            command="terraform plan -no-color -out=tf.plan"
+            command+=" -var-file=../../envs/$3/$2/variables.tfvars -var env=$3"
+        ;;
+        apply)
+            printf "\n\nAbout to: $1 $2 in $3 environment\n"
+            command="terraform apply -auto-approve tf.plan"
+    esac
 
-        wget -O- https://apt.releases.hashicorp.com/gpg | \
-        gpg --dearmor | \
-        tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
-
-        gpg --no-default-keyring \
-        --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
-        --fingerprint
-
-        echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
-        https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
-        tee /etc/apt/sources.list.d/hashicorp.list
-
-        apt update
-
-        apt-get install terraform
-    else
-        printf "\nTerraform already installed."
-    fi
-}
-
-init() {
-    terraform int -var="env=$1"
-}
-
-plan() {
-    terraform plan -var="env=$1" -no-color -out="tf.plan"
-}
-
-apply() {
-    plan $1
-    terraform apply tf.plan -auto-approve -var="env=$1" 
+    echo $command
+    $command
 }
 
 main() {
@@ -53,17 +36,27 @@ main() {
                 shift
                 shift
                 ;;
+            -s|--service)
+                SERVICE="$2"
+                shift
+                shift
+                ;;
             -*|--*)
                 echo "Unkown option $1"
                 exit 1
                 ;;
         esac
-
-        setup $ENV
-        ACTION $ENV
     done
+
+    export ARM_CLIENT_ID=e480723c-480c-4e1d-afec-7d45882e92c9
+    export ARM_CLIENT_SECRET=C_M8Q~CJ.Qk5AOwotYxY2P0KIEo2xyfLbT86rcRz
+    export ARM_TENANT_ID=5f45355f-95f9-4862-9d17-94f05e20529b
+    export ARM_SUBSCRIPTION_ID=586d6509-c783-41ef-a543-39a09899fe70
+
+    source envs/$ENV/set-variables.sh
+    cd layers/$SERVICE
+    execute $ACTION $SERVICE $ENV
 
 }
 
-# ./execute-terraform.sh -a apply -e local
 main "$@"
