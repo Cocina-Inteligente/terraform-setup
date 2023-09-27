@@ -30,18 +30,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    - name: Whitelist GitHub Runner IP
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.30.0
-        inlineScript: |
-          agentIP=$(curl -s https://api.ipify.org/)
-          az storage account network-rule add \
-            --resource-group "${{ secrets.RESOURCE_GROUP }}" \
-            --account-name "${{ secrets.STORAGE_ACCOUNT_NAME }}" \
-            --ip-address $agentIP
-          sleep 30
   
   execute-terraform:
     name: 'Execute Terraform'
@@ -56,6 +44,18 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+    
+    - name: Whitelist GitHub Runner IP
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          agentIP=$(curl -s https://api.ipify.org/)
+          az storage account network-rule add \
+            --resource-group "${{ secrets.RESOURCE_GROUP }}" \
+            --account-name "${{ secrets.STORAGE_ACCOUNT_NAME }}" \
+            --ip-address $agentIP
+          sleep 300
       
     - name: Terraform init
       run: ${GITHUB_WORKSPACE}/execute-terraform.sh -a init -s key_vault -e main
@@ -66,17 +66,6 @@ jobs:
     - name: Terraform apply
       run: ${GITHUB_WORKSPACE}/execute-terraform.sh -a apply  -s key_vault -e main
 
-  clean-up:
-    name: 'Clean up the agent'
-    runs-on: ubuntu-latest
-    needs: execute-terraform
-    environment: main
-
-    defaults:
-      run:
-        shell: bash
-    
-    steps:
     - name: Remove GitHub Runner IP from Whitelist
       if: always()
       uses: azure/CLI@v1
