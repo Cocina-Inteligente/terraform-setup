@@ -21,7 +21,7 @@ setup() {
     sudo apt-get install terraform
 
     terraform -help
-    
+
 }
 
 execute() {
@@ -80,8 +80,9 @@ main() {
     source envs/$ENV/set-variables.sh
     cd layers/$SERVICE
 
-    if [ "$TERRAFORM_INSTALL" = true ] ; then
+    if [ "$TERRAFORM_INSTALL" = true & "$ACTION" = "setup" ] ; then
        setup
+       exit -1
     fi
 
     execute $ACTION $SERVICE $ENV
