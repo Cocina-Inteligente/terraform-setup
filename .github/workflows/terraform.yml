@@ -12,7 +12,7 @@ jobs:
   agent-setup:
     name: 'Agent setup'
     runs-on: ubuntu-latest
-    environment: production
+    environment: main
 
     defaults:
       run:
@@ -47,7 +47,7 @@ jobs:
     name: 'Execute Terraform'
     runs-on: ubuntu-latest
     needs: agent-setup
-    environment: production
+    environment: main
 
     defaults:
       run:
@@ -65,3 +65,28 @@ jobs:
 
     - name: Terraform apply
       run: ${GITHUB_WORKSPACE}/execute-terraform.sh -a apply  -s key_vault -e main
+
+  clean-up:
+    name: 'Clean up the agent'
+    runs-on: ubuntu-latest
+    needs: execute-terraform
+    environment: main
+
+    defaults:
+      run:
+        shell: bash
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3  
+          - name: Remove GitHub Runner IP from Whitelist
+        if: always()
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            set -eu
+            agentIP=$(curl -s https://api.ipify.org/)
+            az storage account network-rule remove  \
+              --resource-group "${{ secrets.RESOURCE_GROUP }}" \
+              --account-name "${{ secrets.STORAGE_ACCOUNT_NAME }}" \
+              --ip-address $agentIP
