@@ -36,6 +36,7 @@ jobs:
   execute-terraform:
     name: 'Execute Terraform'
     runs-on: ubuntu-latest
+    needs: agent-setup
     environment: production
 
     defaults:
