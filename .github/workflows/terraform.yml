@@ -42,14 +42,15 @@ jobs:
             --ip-address $agentIP
           sleep 30
       
-    - name: Terraform init
-      run: ${GITHUB_WORKSPACE}/execute-terraform.sh -a init -s key_vault -e main
+    - name: Key Vault Creation
+      run: ${GITHUB_WORKSPACE}/execute-terraform.sh -a init -s key_vault -e main \
+        ${GITHUB_WORKSPACE}/execute-terraform.sh -a plan -s key_vault -e main \
+        ${GITHUB_WORKSPACE}/execute-terraform.sh -a apply  -s key_vault -e main
 
-    - name: Terraform plan
-      run: ${GITHUB_WORKSPACE}/execute-terraform.sh -a plan -s key_vault -e main
-
-    - name: Terraform apply
-      run: ${GITHUB_WORKSPACE}/execute-terraform.sh -a apply  -s key_vault -e main
+    - name: App Service Creation
+      run: ${GITHUB_WORKSPACE}/execute-terraform.sh -a init -s app_service -e main \
+        ${GITHUB_WORKSPACE}/execute-terraform.sh -a plan -s app_service -e main \
+        ${GITHUB_WORKSPACE}/execute-terraform.sh -a apply  -s app_service -e main
 
     - name: Remove GitHub Runner IP from Whitelist
       if: always()

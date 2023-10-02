@@ -1,4 +1,4 @@
 resource_group_name        = "sa-ci-remote-state-local-uks-rg"
 storage_account_name       = "saciremotestatelocaluks"
 container_name             = "tfstate"
-key                        = "local/app_service.tfstate"
+key                        = "local/key_vault.tfstate"

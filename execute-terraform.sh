@@ -48,11 +48,6 @@ main() {
         esac
     done
 
-    export ARM_CLIENT_ID=e480723c-480c-4e1d-afec-7d45882e92c9
-    export ARM_CLIENT_SECRET=C_M8Q~CJ.Qk5AOwotYxY2P0KIEo2xyfLbT86rcRz
-    export ARM_TENANT_ID=5f45355f-95f9-4862-9d17-94f05e20529b
-    export ARM_SUBSCRIPTION_ID=586d6509-c783-41ef-a543-39a09899fe70
-
     echo curl ipinfo.io/ip
 
     source envs/$ENV/set-variables.sh
