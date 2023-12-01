@@ -1,6 +1,6 @@
 export TERRAFORM_INSTALL=true
 
-export ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}
-export ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}
-export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
-export ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}
+export ARM_CLIENT_ID=${{ env.ARM_CLIENT_ID }}
+export ARM_CLIENT_SECRET=${{ env.ARM_CLIENT_SECRET }}
+export ARM_TENANT_ID=${{ env.ARM_TENANT_ID }}
+export ARM_SUBSCRIPTION_ID=${{ env.ARM_SUBSCRIPTION_ID }}
