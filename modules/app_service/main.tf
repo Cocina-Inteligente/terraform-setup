@@ -12,8 +12,8 @@ resource "azurerm_resource_group" "this" {
 
 resource "azurerm_service_plan" "this" {
   name                = "webapp-asp-${local.main_resource_name}"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.this.name
   os_type             = var.os_type
   sku_name            = var.sku_name
 }
