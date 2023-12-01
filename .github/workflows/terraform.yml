@@ -58,11 +58,10 @@ jobs:
         ${GITHUB_WORKSPACE}/execute-terraform.sh -a apply -s app_service -e main
 
     - name: Remove GitHub Runner IP from Whitelist
-      if: always()
       uses: azure/CLI@v1
       with:
+        azcliversion: 2.30.0
         inlineScript: |
-          set -eu
           agentIP=$(curl -s https://api.ipify.org/)
           az storage account network-rule remove  \
             --resource-group "${{ secrets.RESOURCE_GROUP }}" \

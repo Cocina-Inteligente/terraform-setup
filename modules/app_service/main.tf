@@ -1,5 +1,6 @@
 locals {
-  main_resource_name = "${var.app_name}-${var.env}-${var.location}"
+  resource_type = "api-rest"
+  main_resource_name = "${local.resource_type}-${var.app_name}-${var.env}-${var.location}"
   short_resource_name = replace(local.main_resource_name, "-", "")
 }
 
