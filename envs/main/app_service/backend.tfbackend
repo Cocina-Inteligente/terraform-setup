@@ -1,0 +1,4 @@
+resource_group_name        = "sa-ci-remote-state-main-uks-rg"
+storage_account_name       = "saciremotestatemainuks"
+container_name             = "tfstate"
+key                        = "main/app_service.tfstate"
