@@ -48,7 +48,12 @@ main() {
         esac
     done
 
-    source envs/$ENV/set-variables.sh
+    export ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}
+export ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}
+export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
+export ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+    # source envs/$ENV/set-variables.sh
     cd layers/$SERVICE
 
     execute $ACTION $SERVICE $ENV
