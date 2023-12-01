@@ -8,7 +8,7 @@ execute() {
             command="terraform init -backend-config=../../envs/$3/$2/backend.tfbackend"
             command+=" -var-file=../../envs/$3/$2/variables.tfvars -var env=$3"
         ;;
-        plan)
+        plan)   
             printf "\n\nAbout to: $1 $2 in $3 environment\n"
             command="terraform plan -no-color -out=tf.plan"
             command+=" -var-file=../../envs/$3/$2/variables.tfvars -var env=$3"
@@ -47,8 +47,6 @@ main() {
                 ;;
         esac
     done
-
-    echo curl ipinfo.io/ip
 
     source envs/$ENV/set-variables.sh
     cd layers/$SERVICE
